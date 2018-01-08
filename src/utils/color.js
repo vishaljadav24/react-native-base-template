@@ -2,7 +2,6 @@
 export const Color = {
     WHITE: "#FFFFFF",
     BLACK: "#000000",
-
     PRIMARY:
         "#323232",
     PRIMARY_DARK:
@@ -11,6 +10,4 @@ export const Color = {
         "transparent",
     TEXT_PRIMARY: "#445c6d",
     INPUT_TEXT_PRIMARY: "#323232"
-
-
 };
