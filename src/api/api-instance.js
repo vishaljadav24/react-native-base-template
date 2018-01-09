@@ -34,32 +34,30 @@ axiosInstance.interceptors.response.use((response) => {
     let dataResponse = {
         status: response.status,
         meta: response.data.meta,
-        data: response.data.data !== undefined ? response.data.data : null,
-        pagination: response.data.pagination !== undefined ? response.data.pagination : null
+        data: response.data.data ? response.data.data : null,
     };
     console.log("response :: ", dataResponse);
     return Promise.resolve(dataResponse);
 }, (error) => {
     let errorResponse = {
-        status: error.response !== undefined ? error.response.status : ResponseCode.INTERNAL_SERVER_ERROR,
-        meta: error.response.data.meta !== undefined ? error.response.data.meta : undefined,
-        data: error.response.data.data !== undefined ? error.response.data.data : undefined,
+        status: error.response ? error.response.status : ResponseCode.INTERNAL_SERVER_ERROR,
+        meta: error.response.data.meta ? error.response.data.meta : undefined,
+        data: error.response.data.data ? error.response.data.data : undefined,
     };
     console.log("error :: ", errorResponse);
     switch (errorResponse.status) {
         case ResponseCode.NOT_FOUND:
-            // showSnackBar(errorResponse.meta !== undefined ? errorResponse.meta.message : "Sorry, Not Found");
+           // handle api url not found
             break;
         case ResponseCode.BAD_GATEWAY:
-            // showSnackBar(errorResponse.meta !== undefined ? errorResponse.meta.message : "Something went wrong.Please try again.");
+            // handle something went wrong with server
             break;
         case ResponseCode.INTERNAL_SERVER_ERROR:
-            // showSnackBar(errorResponse.meta !== undefined ? errorResponse.meta.message : "Server Error. Please try again.");
-            break;
+            // handle server error
         case ResponseCode.TOKEN_INVALID:
+        // handle token invalid (here logout user from app if token invalid)
             store.dispatch(logout());
             DeviceEventEmitter.emit(notificationKey.LOGOUT, {});
-            // showSnackBar(errorResponse.meta !== undefined ? errorResponse.meta.message : "Server Error. Please try again.");
             break;
     }
     return Promise.reject(errorResponse);
